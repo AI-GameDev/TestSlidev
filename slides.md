@@ -11,7 +11,7 @@ mdc: true
 aspectRatio: '16/9'
 canvasWidth: 980
 layout: intro
-image: /images/workflow-overview.jpeg
+image: ./images/workflow-overview.jpeg
 ---
 
 <div class="mb-4 absolute bottom-4 left-12">
@@ -25,8 +25,8 @@ image: /images/workflow-overview.jpeg
 
 ---
 layout: image-header-intro
-imageHeader: /images/z-image-turbo.png
-imageRight: /images/z-image-turbo.png
+imageHeader: ./images/z-image-turbo.png
+imageRight: ./images/z-image-turbo.png
 ---
 
 <div class="leading-snug text-black dark:text-white">
@@ -92,7 +92,7 @@ imageRight: /images/z-image-turbo.png
 
 ---
 layout: center-image
-image: /images/workflow-overview.jpeg
+image: ./images/workflow-overview.jpeg
 ---
 
 # 목표 워크플로우
@@ -147,14 +147,14 @@ flowchart LR
 </div>
 
 <div class="flex items-center justify-center">
-  <img src="/images/system-architecture.jpeg" class="max-h-full max-w-full object-contain rounded-lg shadow-lg" />
+  <img src="./images/system-architecture.jpeg" class="max-h-full max-w-full object-contain rounded-lg shadow-lg" />
 </div>
 
 </div>
 
 ---
 layout: dynamic-image
-image: /images/tasker-wol.png
+image: ./images/tasker-wol.png
 equal: false
 left: false
 ---
@@ -190,7 +190,7 @@ n8n → HTTP Request → WOL API → Magic Packet → PC 부팅
 
 ---
 layout: dynamic-image
-image: /images/vpn-ssh.png
+image: ./images/vpn-ssh.png
 equal: true
 left: false
 ---
@@ -220,8 +220,8 @@ ssh username@192.168.x.x
 
 ---
 layout: dynamic-image
-image: /images/nocodb-ref.png
-upperImage: /images/nocodb-result.png
+image: ./images/nocodb-ref.png
+upperImage: ./images/nocodb-result.png
 equal: false
 left: false
 ---
@@ -245,7 +245,7 @@ left: false
 
 ---
 layout: dynamic-image
-image: /images/z-image-turbo.png
+image: ./images/z-image-turbo.png
 equal: true
 left: false
 ---
@@ -363,7 +363,7 @@ if (-not $process) {
 
 ---
 layout: dynamic-image
-image: /images/python-api-test.png
+image: ./images/python-api-test.png
 equal: true
 left: false
 ---
@@ -399,7 +399,7 @@ def generate_image(prompt):
 
 ---
 layout: dynamic-image
-image: /images/n8n-workflow.png
+image: ./images/n8n-workflow.png
 equal: false
 left: false
 ---
@@ -463,8 +463,8 @@ shutdown /s /t 60 /f
 
 ---
 layout: dynamic-image
-image: /images/kakao-bot-1.png
-upperImage: /images/kakao-bot-2.png
+image: ./images/kakao-bot-1.png
+upperImage: ./images/kakao-bot-2.png
 equal: false
 left: false
 ---
@@ -492,8 +492,8 @@ left: false
 
 ---
 layout: dynamic-image
-image: /images/sample-1.png
-upperImage: /images/sample-2.png
+image: ./images/sample-1.png
+upperImage: ./images/sample-2.png
 equal: true
 left: false
 ---
@@ -659,7 +659,7 @@ graph TB
 
 ---
 layout: intro
-image: /images/sample-1.png
+image: ./images/sample-1.png
 ---
 
 <div class="mb-4 absolute bottom-4 left-12">
@@ -691,7 +691,7 @@ image: /images/sample-1.png
 
 ---
 layout: intro
-image: /images/workflow-overview.jpeg
+image: ./images/workflow-overview.jpeg
 ---
 
 <div class="mb-4 absolute bottom-4 left-12">
