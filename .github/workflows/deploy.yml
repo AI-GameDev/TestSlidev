@@ -29,9 +29,8 @@ jobs:
           find dist -type f -name "*.js" -exec perl -pi -e 's|(?<!/TestSlidev)/images/|/TestSlidev/images/|g' {} \;
           find dist -type f -name "*.css" -exec perl -pi -e 's|(?<!/TestSlidev)/images/|/TestSlidev/images/|g' {} \;
           find dist -type f -name "*.html" -exec perl -pi -e 's|(?<!/TestSlidev)/images/|/TestSlidev/images/|g' {} \;
-          # Debug: Verify paths are correct
-          echo "=== Checking image paths ==="
-          grep -r "system-architecture" dist/assets/*.js | head -3 || true
+          # Fix SPA routing for GitHub Pages - copy index.html to 404.html
+          cp dist/index.html dist/404.html
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
