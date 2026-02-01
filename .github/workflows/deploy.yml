@@ -25,17 +25,17 @@ jobs:
         run: npm run build -- --base /TestSlidev/
       - name: Fix image paths for subdirectory deployment
         run: |
-          # Debug: Show files being processed
-          echo "=== Processing JS files ==="
-          # Replace ALL /images/ patterns in JS files (handles minified code too)
+          # Step 1: Normalize - remove any existing /TestSlidev/ prefix (Vite may have added it for some assets)
+          find dist -type f -name "*.js" -exec sed -i 's|/TestSlidev/images/|/images/|g' {} \;
+          find dist -type f -name "*.css" -exec sed -i 's|/TestSlidev/images/|/images/|g' {} \;
+          find dist -type f -name "*.html" -exec sed -i 's|/TestSlidev/images/|/images/|g' {} \;
+          # Step 2: Apply correct prefix to all /images/ paths
           find dist -type f -name "*.js" -exec sed -i 's|/images/|/TestSlidev/images/|g' {} \;
-          # Fix CSS files
           find dist -type f -name "*.css" -exec sed -i 's|/images/|/TestSlidev/images/|g' {} \;
-          # Fix HTML files
           find dist -type f -name "*.html" -exec sed -i 's|/images/|/TestSlidev/images/|g' {} \;
-          # Debug: Verify replacement worked
-          echo "=== Checking if /images/ still exists ==="
-          grep -r "/images/" dist/ || echo "No /images/ found - replacement successful"
+          # Debug: Verify no double prefix exists
+          echo "=== Checking for double prefix ==="
+          grep -r "/TestSlidev/TestSlidev/" dist/ && echo "ERROR: Double prefix found!" || echo "OK: No double prefix"
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
