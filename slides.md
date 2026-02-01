@@ -1,5 +1,6 @@
 ---
 theme: light-icons
+routerMode: 'hash'
 title: ComfyUI 이미지 자동화 완벽 가이드
 info: |
   ## ComfyUI + n8n으로 무인 대량 이미지 생성하기
