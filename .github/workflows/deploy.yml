@@ -25,14 +25,14 @@ jobs:
         run: npm run build -- --base /TestSlidev/
       - name: Fix image paths for subdirectory deployment
         run: |
-          # Replace /images/ with /TestSlidev/images/ in CSS url() references
-          find dist -type f \( -name "*.css" -o -name "*.js" \) -exec sed -i 's|url("/images/|url("/TestSlidev/images/|g' {} \;
-          find dist -type f \( -name "*.css" -o -name "*.js" \) -exec sed -i "s|url('/images/|url('/TestSlidev/images/|g" {} \;
-          # Fix inline styles in HTML
-          find dist -type f -name "*.html" -exec sed -i 's|url("/images/|url("/TestSlidev/images/|g' {} \;
-          find dist -type f -name "*.html" -exec sed -i "s|url('/images/|url('/TestSlidev/images/|g" {} \;
-          # Fix img src attributes
-          find dist -type f -name "*.html" -exec sed -i 's|src="/images/|src="/TestSlidev/images/|g' {} \;
+          # Replace /images/ with /TestSlidev/images/ in JS files (string literals)
+          find dist -type f -name "*.js" -exec sed -i 's|"/images/|"/TestSlidev/images/|g' {} \;
+          find dist -type f -name "*.js" -exec sed -i "s|'/images/|'/TestSlidev/images/|g" {} \;
+          # Fix CSS url() references
+          find dist -type f -name "*.css" -exec sed -i 's|/images/|/TestSlidev/images/|g' {} \;
+          # Fix HTML img src and inline styles
+          find dist -type f -name "*.html" -exec sed -i 's|"/images/|"/TestSlidev/images/|g' {} \;
+          find dist -type f -name "*.html" -exec sed -i "s|'/images/|'/TestSlidev/images/|g" {} \;
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
