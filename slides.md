@@ -346,17 +346,17 @@ if (-not $process) {
 
 <div v-click class="p-4 bg-blue-500/20 rounded-lg text-center">
   <light-icon icon="server" size="28px"/>
-  <div class="text-sm mt-2">`Invoke-WmiMethod`로<br/>**시스템 레벨** 프로세스 생성</div>
+  <div class="text-sm mt-2"><code>Invoke-WmiMethod</code>로<br/><strong>시스템 레벨</strong> 프로세스 생성</div>
 </div>
 
 <div v-click class="p-4 bg-green-500/20 rounded-lg text-center">
   <light-icon icon="link" size="28px"/>
-  <div class="text-sm mt-2">SSH 세션과<br/>**완전히 독립적** 실행</div>
+  <div class="text-sm mt-2">SSH 세션과<br/><strong>완전히 독립적</strong> 실행</div>
 </div>
 
 <div v-click class="p-4 bg-purple-500/20 rounded-lg text-center">
   <light-icon icon="refresh" size="28px"/>
-  <div class="text-sm mt-2">**중복 실행 방지**<br/>로직 포함</div>
+  <div class="text-sm mt-2"><strong>중복 실행 방지</strong><br/>로직 포함</div>
 </div>
 
 </div>
