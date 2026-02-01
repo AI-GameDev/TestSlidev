@@ -21,9 +21,14 @@ jobs:
         run: |
           npx slidev build presentations/${{ matrix.presentation }}/slides.md \
             --base /TestSlidev/${{ matrix.presentation }}/ \
-            --out dist/${{ matrix.presentation }}
+            --out ../../dist/${{ matrix.presentation }}
+        working-directory: presentations/${{ matrix.presentation }}
       - name: Fix image paths
         run: |
+          # Debug: Show directory structure
+          echo "=== Directory structure ==="
+          ls -la dist/ || echo "dist/ not found"
+          ls -la dist/${{ matrix.presentation }}/ || echo "dist/${{ matrix.presentation }}/ not found"
           # Fix image paths for subdirectory deployment
           find dist/${{ matrix.presentation }} -type f -name "*.js" \
             -exec perl -pi -e 's|(?<!/TestSlidev/${{ matrix.presentation }})/images/|/TestSlidev/${{ matrix.presentation }}/images/|g' {} \;
