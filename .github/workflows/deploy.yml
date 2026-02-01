@@ -19,7 +19,7 @@ jobs:
         run: npm install
       - name: Build ${{ matrix.presentation }}
         run: |
-          npx slidev build presentations/${{ matrix.presentation }}/slides.md \
+          npx slidev build slides.md \
             --base /TestSlidev/${{ matrix.presentation }}/ \
             --out ../../dist/${{ matrix.presentation }}
         working-directory: presentations/${{ matrix.presentation }}
