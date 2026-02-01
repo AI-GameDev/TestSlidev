@@ -9,14 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        presentation: [comfyui]  # 새 프레젠테이션 추가 시 여기에 추가
+        presentation: [comfyui, infinitetalk]  # 새 프레젠테이션 추가 시 여기에 추가
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
+          cache: 'pnpm'
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
       - name: Build ${{ matrix.presentation }}
         run: |
           npx slidev build slides.md \
