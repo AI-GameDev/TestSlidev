@@ -3,9 +3,12 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "slidev build",
-    "dev": "slidev --open",
-    "export": "slidev export"
+    "dev": "slidev presentations/comfyui/slides.md --open",
+    "dev:comfyui": "slidev presentations/comfyui/slides.md --open",
+    "build": "slidev build presentations/comfyui/slides.md",
+    "build:comfyui": "slidev build presentations/comfyui/slides.md --base /TestSlidev/comfyui/ --out dist/comfyui",
+    "export": "slidev export presentations/comfyui/slides.md",
+    "new": "node scripts/create-presentation.js"
   },
   "dependencies": {
     "@slidev/cli": "^52.11.5",

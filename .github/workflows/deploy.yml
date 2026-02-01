@@ -1,11 +1,45 @@
-name: Deploy pages
+name: Deploy Presentations
 
 on:
   push:
     branches: [main]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        presentation: [comfyui]  # 새 프레젠테이션 추가 시 여기에 추가
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - name: Install dependencies
+        run: npm install
+      - name: Build ${{ matrix.presentation }}
+        run: |
+          npx slidev build presentations/${{ matrix.presentation }}/slides.md \
+            --base /TestSlidev/${{ matrix.presentation }}/ \
+            --out dist/${{ matrix.presentation }}
+      - name: Fix image paths
+        run: |
+          # Fix image paths for subdirectory deployment
+          find dist/${{ matrix.presentation }} -type f -name "*.js" \
+            -exec perl -pi -e 's|(?<!/TestSlidev/${{ matrix.presentation }})/images/|/TestSlidev/${{ matrix.presentation }}/images/|g' {} \;
+          find dist/${{ matrix.presentation }} -type f -name "*.css" \
+            -exec perl -pi -e 's|(?<!/TestSlidev/${{ matrix.presentation }})/images/|/TestSlidev/${{ matrix.presentation }}/images/|g' {} \;
+          find dist/${{ matrix.presentation }} -type f -name "*.html" \
+            -exec perl -pi -e 's|(?<!/TestSlidev/${{ matrix.presentation }})/images/|/TestSlidev/${{ matrix.presentation }}/images/|g' {} \;
+          # Copy index.html to 404.html for SPA routing
+          cp dist/${{ matrix.presentation }}/index.html dist/${{ matrix.presentation }}/404.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.presentation }}
+          path: dist/${{ matrix.presentation }}
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -15,22 +49,53 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/download-artifact@v4
         with:
-          node-version: 'lts/*'
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build -- --base /TestSlidev/
-      - name: Fix image paths for subdirectory deployment
+          pattern: dist-*
+          path: dist
+      - name: Reorganize artifacts
         run: |
-          # Use perl with negative lookbehind to only replace /images/ NOT preceded by /TestSlidev
-          find dist -type f -name "*.js" -exec perl -pi -e 's|(?<!/TestSlidev)/images/|/TestSlidev/images/|g' {} \;
-          find dist -type f -name "*.css" -exec perl -pi -e 's|(?<!/TestSlidev)/images/|/TestSlidev/images/|g' {} \;
-          find dist -type f -name "*.html" -exec perl -pi -e 's|(?<!/TestSlidev)/images/|/TestSlidev/images/|g' {} \;
-          # Fix SPA routing for GitHub Pages - copy index.html to 404.html
-          cp dist/index.html dist/404.html
+          # Move contents from dist-* folders to proper structure
+          mkdir -p final
+          for dir in dist/dist-*/; do
+            name=$(basename "$dir" | sed 's/dist-//')
+            mv "$dir" "final/$name"
+          done
+          mv final/* dist/
+          rm -rf final
+      - name: Create index page
+        run: |
+          cat > dist/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="ko">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Presentations</title>
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+              h1 { color: #333; }
+              ul { list-style: none; padding: 0; }
+              li { margin: 10px 0; }
+              a { color: #0066cc; text-decoration: none; font-size: 1.2em; }
+              a:hover { text-decoration: underline; }
+            </style>
+          </head>
+          <body>
+            <h1>Presentations</h1>
+            <ul>
+          EOF
+          for dir in dist/*/; do
+            if [ -d "$dir" ]; then
+              name=$(basename "$dir")
+              echo "    <li><a href=\"$name/\">$name</a></li>" >> dist/index.html
+            fi
+          done
+          cat >> dist/index.html << 'EOF'
+            </ul>
+          </body>
+          </html>
+          EOF
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
